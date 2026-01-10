@@ -1,0 +1,13 @@
+{
+  "matcher": "UserPromptSubmit|PreToolUse|PostToolUse",
+  "hooks": [
+    {
+      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.js",
+      "timeout": 1
+    },
+    {
+      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/rag-skill-loader.js",
+      "timeout": 1
+    }
+  ]
+}

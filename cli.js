@@ -2,6 +2,12 @@
 /**
  * Oh My Claude - CLI Entry Point
  * Agent harness for Claude Code
+ *
+ * Features:
+ * - Multi-agent orchestration
+ * - Skills management via OpenSkills
+ * - Built-in Claude Code project template
+ * - ThinkingLens conversation tracking
  */
 
 const fs = require('fs');
@@ -11,16 +17,17 @@ const { execSync } = require('child_process');
 const CONFIG_DIR = path.join(process.env.HOME, '.claude');
 const CONFIG_FILE = path.join(CONFIG_DIR, 'config.json');
 const SKILLS_DIR = path.join(CONFIG_DIR, 'skills');
+const TEMPLATE_DIR = path.join(__dirname, 'template');
 
-// 默认配置
+// 默认配置 - 所有 Agent 使用 Opus 4.5
 const DEFAULT_CONFIG = {
   version: '1.0.0',
   agents: {
     conductor: { model: 'claude-opus-4.5', role: 'Task coordination and decomposition' },
-    architect: { model: 'claude-sonnet-4.5', role: 'Architecture design and decisions' },
-    builder: { model: 'claude-sonnet-4.5', role: 'Code implementation and testing' },
-    reviewer: { model: 'claude-haiku-4.5', role: 'Code review and quality check' },
-    librarian: { model: 'claude-sonnet-4.5', role: 'Documentation and knowledge' }
+    architect: { model: 'claude-opus-4.5', role: 'Architecture design and decisions' },
+    builder: { model: 'claude-opus-4.5', role: 'Code implementation and testing' },
+    reviewer: { model: 'claude-opus-4.5', role: 'Code review and quality check' },
+    librarian: { model: 'claude-opus-4.5', role: 'Documentation and knowledge' }
   },
   skills: [
     'anthropics/skills',
@@ -176,6 +183,202 @@ const commands = {
     } catch (e) {
       console.log('❌ Failed to install skill');
     }
+  },
+
+  template: (targetPath) => {
+    const targetDir = targetPath ? path.resolve(targetPath) : process.cwd();
+
+    console.log('🚀 Initializing Claude Code project template...');
+    console.log('   Target:', targetDir);
+    console.log('');
+
+    // 检查模板目录是否存在
+    if (!fs.existsSync(TEMPLATE_DIR)) {
+      console.log('❌ Template not found at:', TEMPLATE_DIR);
+      console.log('   Please reinstall oh-my-claude');
+      process.exit(1);
+    }
+
+    // 创建目录结构
+    console.log('📁 Creating directory structure...');
+    const dirs = [
+      path.join(targetDir, '.claude/hooks'),
+      path.join(targetDir, '.claude/thinking-routes'),
+      path.join(targetDir, '.claude/skills'),
+      path.join(targetDir, '.claude/rag'),
+      path.join(targetDir, 'prompts')
+    ];
+
+    dirs.forEach(dir => {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    });
+    console.log('   ✅ Directories created');
+
+    // 复制文件
+    console.log('📋 Copying template files...');
+
+    // 复制 .claude 文件
+    const claudeTemplateDir = path.join(TEMPLATE_DIR, '.claude');
+    if (fs.existsSync(claudeTemplateDir)) {
+      // CLAUDE-template.md
+      const claudeTemplate = path.join(claudeTemplateDir, 'CLAUDE-template.md');
+      if (fs.existsSync(claudeTemplate)) {
+        fs.copyFileSync(claudeTemplate, path.join(targetDir, '.claude/CLAUDE.md'));
+        console.log('   ✅ .claude/CLAUDE.md');
+      }
+
+      // settings.json
+      const settingsFile = path.join(claudeTemplateDir, 'settings.json');
+      if (fs.existsSync(settingsFile)) {
+        fs.copyFileSync(settingsFile, path.join(targetDir, '.claude/settings.json'));
+        console.log('   ✅ .claude/settings.json');
+      }
+
+      // hooks/
+      const hooksDir = path.join(claudeTemplateDir, 'hooks');
+      if (fs.existsSync(hooksDir)) {
+        const hooks = fs.readdirSync(hooksDir);
+        hooks.forEach(hook => {
+          const src = path.join(hooksDir, hook);
+          const dest = path.join(targetDir, '.claude/hooks', hook);
+          fs.copyFileSync(src, dest);
+          // 添加执行权限
+          if (hook.endsWith('.js') || hook.endsWith('.sh')) {
+            fs.chmodSync(dest, 0o755);
+          }
+        });
+        console.log('   ✅ .claude/hooks/ (' + hooks.length + ' files)');
+      }
+
+      // thinking-routes/
+      const routesDir = path.join(claudeTemplateDir, 'thinking-routes');
+      if (fs.existsSync(routesDir)) {
+        const files = fs.readdirSync(routesDir);
+        files.forEach(file => {
+          fs.copyFileSync(
+            path.join(routesDir, file),
+            path.join(targetDir, '.claude/thinking-routes', file)
+          );
+        });
+        console.log('   ✅ .claude/thinking-routes/');
+      }
+
+      // rag/
+      const ragDir = path.join(claudeTemplateDir, 'rag');
+      if (fs.existsSync(ragDir)) {
+        const files = fs.readdirSync(ragDir);
+        files.forEach(file => {
+          fs.copyFileSync(
+            path.join(ragDir, file),
+            path.join(targetDir, '.claude/rag', file)
+          );
+        });
+        console.log('   ✅ .claude/rag/');
+      }
+    }
+
+    // 复制 prompts/
+    const promptsDir = path.join(TEMPLATE_DIR, 'prompts');
+    if (fs.existsSync(promptsDir)) {
+      const files = fs.readdirSync(promptsDir);
+      files.forEach(file => {
+        fs.copyFileSync(
+          path.join(promptsDir, file),
+          path.join(targetDir, 'prompts', file)
+        );
+      });
+      console.log('   ✅ prompts/');
+    }
+
+    // 复制根目录文件
+    const files = ['project-paradigm.md', 'thinkinglens-silent.md'];
+    files.forEach(file => {
+      const src = path.join(TEMPLATE_DIR, file);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, path.join(targetDir, file));
+        console.log('   ✅ ' + file);
+      }
+    });
+
+    // 创建记忆文件
+    console.log('📝 Creating memory files...');
+    if (!fs.existsSync(path.join(targetDir, '.claude/MEMORY.md'))) {
+      fs.writeFileSync(path.join(targetDir, '.claude/MEMORY.md'), '# Memory\n\n<!-- Project memory updated by AI -->\n');
+    }
+    if (!fs.existsSync(path.join(targetDir, '.claude/PROJECT_LOG.md'))) {
+      fs.writeFileSync(path.join(targetDir, '.claude/PROJECT_LOG.md'), '# Project Log\n\n<!-- Build history and decisions -->\n');
+    }
+    console.log('   ✅ Memory files created');
+
+    // 创建 ANCHORS.md
+    const anchorsContent = `# [Project Name] - Skill Anchors Index
+
+> This file is auto-maintained by AI as a quick index for the skill system
+> Last updated: ${new Date().toISOString().split('T')[0]}
+
+---
+
+## 🚀 AI Startup: Memory Loading Order
+
+\`\`\`
+1. ANCHORS.md (this file)     → Quick locate modules
+2. PROJECT_LOG.md            → Understand build history
+3. MEMORY.md                 → View latest changes
+4. CLAUDE.md                 → Load core knowledge
+5. prompts/                  → View tutorials
+6. .claude/rag/skills.md     → RAG skill index ⭐
+7. Specific files            → Deep dive into implementation
+\`\`\`
+
+---
+
+## Current Anchor Mapping
+
+### Teaching Resources
+| Anchor | File Path | Purpose |
+|--------|-----------|---------|
+| \`[doc:paradigm]\` | \`prompts/project-paradigm.md\` | General development paradigm ⭐ |
+| \`[doc:claude-template]\` | \`.claude/CLAUDE.md\` | CLAUDE.md template for new projects |
+
+### RAG System
+| Anchor | File Path | Purpose |
+|--------|-----------|---------|
+| \`[system:rag-index]\` | \`.claude/rag/skill-index.json\` | Dynamic skill index ⭐ |
+
+---
+
+## Add Your Anchors Here...
+
+`;
+    fs.writeFileSync(path.join(targetDir, '.claude/ANCHORS.md'), anchorsContent);
+    console.log('   ✅ .claude/ANCHORS.md');
+
+    // 初始化 Oh My Claude（如果已安装）
+    console.log('');
+    console.log('🤖 Initializing Oh My Claude...');
+    try {
+      execSync('oh-my-claude sync', { cwd: targetDir, stdio: 'pipe' });
+      console.log('   ✅ Oh My Claude synced');
+    } catch (e) {
+      console.log('   ⚠️  Oh My Claude not available (run: npm i -g oh-my-claude)');
+    }
+
+    console.log('');
+    console.log('✅ Template initialization complete!');
+    console.log('');
+    console.log('📦 What was included:');
+    console.log('   • AI autonomous memory system (ThinkingLens)');
+    console.log('   • Oh My Claude integration');
+    console.log('   • RAG dynamic skill index');
+    console.log('   • 20+ pre-configured skills');
+    console.log('');
+    console.log('Next steps:');
+    console.log('   1. Edit .claude/CLAUDE.md with your project info');
+    console.log('   2. Edit .claude/ANCHORS.md to add your anchors');
+    console.log('   3. Run: oh-my-claude status');
+    console.log('');
   }
 };
 
@@ -236,6 +439,8 @@ function main() {
     commands['skill:list']();
   } else if (cmd === 'skill:install') {
     commands['skill:install'](arg);
+  } else if (cmd === 'template') {
+    commands.template(arg);
   } else {
     console.log('Oh My Claude - Agent Harness for Claude Code');
     console.log('');
@@ -244,6 +449,7 @@ function main() {
     console.log('Commands:');
     console.log('  init              Initialize configuration');
     console.log('  sync              Sync to current project');
+    console.log('  template [path]   Deploy Claude Code project template');
     console.log('  agent <task>      Run agent orchestration');
     console.log('  status            Show configuration status');
     console.log('  skill:list        List installed skills');
@@ -252,6 +458,8 @@ function main() {
     console.log('Examples:');
     console.log('  oh-my-claude init');
     console.log('  oh-my-claude sync');
+    console.log('  oh-my-claude template');
+    console.log('  oh-my-claude template /path/to/project');
     console.log('  oh-my-claude agent "Build a REST API"');
     console.log('  oh-my-claude skill:install anthropics/skills');
   }

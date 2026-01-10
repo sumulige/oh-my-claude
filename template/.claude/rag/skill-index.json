@@ -1,0 +1,135 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-01-11",
+  "skills": [
+    {
+      "name": "frontend-design",
+      "keywords": ["frontend", "ui", "react", "vue", "svelte", "design", "interface", "component", "web", "styling", "tailwind", "css"],
+      "description": "Create distinctive, production-grade frontend interfaces with high design quality",
+      "trigger": "when user asks to build web components, pages, artifacts, posters, or applications"
+    },
+    {
+      "name": "docx",
+      "keywords": ["docx", "word", "document", "office", "microsoft", "doc", "editing", "tracked changes", "comments"],
+      "description": "Comprehensive document creation, editing, and analysis with support for tracked changes and comments",
+      "trigger": "when working with .docx files for creating, editing, or analyzing documents"
+    },
+    {
+      "name": "pdf",
+      "keywords": ["pdf", "form", "fill", "extract", "merge", "split", "acrobat", "fillable"],
+      "description": "Comprehensive PDF manipulation toolkit for extracting text, creating new PDFs, and handling forms",
+      "trigger": "when working with PDF forms, extraction, or programmatic processing"
+    },
+    {
+      "name": "pptx",
+      "keywords": ["pptx", "powerpoint", "slide", "presentation", "deck", "microsoft", "office"],
+      "description": "Presentation creation, editing, and analysis with layout support",
+      "trigger": "when working with presentations (.pptx files)"
+    },
+    {
+      "name": "xlsx",
+      "keywords": ["xlsx", "excel", "spreadsheet", "csv", "tsv", "formula", "chart", "data analysis"],
+      "description": "Comprehensive spreadsheet creation, editing, and analysis with formula support",
+      "trigger": "when working with spreadsheets for reading, analyzing, or creating data"
+    },
+    {
+      "name": "canvas-design",
+      "keywords": ["art", "design", "canvas", "poster", "visual", "creative", "generative", "algorithmic"],
+      "description": "Create beautiful visual art in .png and .pdf documents using design philosophy",
+      "trigger": "when user asks to create a poster, piece of art, design, or other static visual piece"
+    },
+    {
+      "name": "mcp-builder",
+      "keywords": ["mcp", "api", "server", "integration", "tool", "model context protocol", "external service"],
+      "description": "Guide for creating high-quality MCP servers that enable LLMs to interact with external services",
+      "trigger": "when building MCP servers to integrate external APIs or services"
+    },
+    {
+      "name": "webapp-testing",
+      "keywords": ["test", "testing", "playwright", "browser", "automation", "e2e", "screenshot"],
+      "description": "Toolkit for interacting with and testing local web applications using Playwright",
+      "trigger": "when testing frontend functionality, debugging UI behavior, or capturing browser screenshots"
+    },
+    {
+      "name": "orchestration",
+      "keywords": ["agent", "multi-agent", "workflow", "coordination", "parallel", "distributed"],
+      "description": "Multi-agent orchestration with cc-mirror tasks and domain-specific workflows",
+      "trigger": "when coordinating multiple agents or workflows for complex tasks"
+    },
+    {
+      "name": "algorithmic-art",
+      "keywords": ["p5.js", "generative", "algorithmic", "art", "creative", "random", "flow field", "particle"],
+      "description": "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration",
+      "trigger": "when user requests creating art using code, generative art, or algorithmic art"
+    },
+    {
+      "name": "slack-gif-creator",
+      "keywords": ["gif", "slack", "animated", "animation", "meme", "visual"],
+      "description": "Knowledge and utilities for creating animated GIFs optimized for Slack",
+      "trigger": "when user requests animated GIFs for Slack"
+    },
+    {
+      "name": "theme-factory",
+      "keywords": ["theme", "style", "color", "typography", "branding", "design system"],
+      "description": "Toolkit for styling artifacts with a theme - 10 pre-set themes with colors/fonts",
+      "trigger": "when applying consistent theming to documents, slides, or web pages"
+    },
+    {
+      "name": "skill-creator",
+      "keywords": ["skill", "create skill", "custom skill", "extend", "workflow"],
+      "description": "Guide for creating effective skills that extend Claude's capabilities",
+      "trigger": "when user wants to create a new skill or update an existing skill"
+    },
+    {
+      "name": "doc-coauthoring",
+      "keywords": ["documentation", "doc", "proposal", "spec", "technical spec", "decision doc", "writing"],
+      "description": "Guide users through structured workflow for co-authoring documentation",
+      "trigger": "when user wants to write documentation, proposals, technical specs, or decision docs"
+    },
+    {
+      "name": "brand-guidelines",
+      "keywords": ["brand", "anthropic", "color", "typography", "style", "guidelines"],
+      "description": "Applies Anthropic's official brand colors and typography to artifacts",
+      "trigger": "when brand colors or style guidelines apply to the artifact"
+    },
+    {
+      "name": "internal-comms",
+      "keywords": ["internal", "communication", "status report", "newsletter", "faq", "company", "update"],
+      "description": "Resources for writing internal communications in company-preferred formats",
+      "trigger": "when asked to write internal communications like status reports or newsletters"
+    },
+    {
+      "name": "web-artifacts-builder",
+      "keywords": ["artifact", "html", "react", "complex", "state", "routing", "shadcn"],
+      "description": "Tools for creating elaborate, multi-component HTML artifacts using modern frontend web technologies",
+      "trigger": "for complex artifacts requiring state management, routing, or shadcn/ui components"
+    },
+    {
+      "name": "dev-browser",
+      "keywords": ["browser", "scraping", "automation", "puppet", "playwright", "web"],
+      "description": "Browser automation with persistent state for testing and scraping",
+      "trigger": "when needing browser automation or web scraping capabilities"
+    },
+    {
+      "name": "zai-cli",
+      "keywords": ["z.ai", "vision", "search", "github", "exploration", "analysis"],
+      "description": "Z.AI vision, search, and GitHub exploration CLI tools",
+      "trigger": "when needing vision analysis, web search, or GitHub repository exploration"
+    },
+    {
+      "name": "gastown",
+      "keywords": ["gastown", "multi-agent", "orchestrator", "coordination"],
+      "description": "Multi-agent orchestrator for complex task coordination",
+      "trigger": "when orchestrating multiple agents for complex workflows"
+    }
+  ],
+  "auto_load": {
+    "enabled": true,
+    "confidence_threshold": 0.7,
+    "max_skills_per_task": 3
+  },
+  "fallback": {
+    "enabled": true,
+    "skill": "frontend-design"
+  }
+}

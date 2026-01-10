@@ -105,6 +105,13 @@ oh-my-claude status
 
 Config: /Users/你的用户名/.claude/config.json
 
+  Agents + Skills + Hooks + MCP
+  ├── Conductor → 任务分解
+  ├── Architect → 架构设计
+  ├── Builder   → 代码实现
+  ├── Reviewer  → 质量检查
+  └── Librarian → 文档整理
+
 Agents:
   conductor    claude-opus-4.5      (Task coordination and decomposition)
   architect    claude-opus-4.5      (Architecture design and decisions)

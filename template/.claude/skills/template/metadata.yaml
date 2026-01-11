@@ -1,0 +1,30 @@
+# Skill Metadata
+# 这个文件定义技能的基本信息，用于自动发现和索引
+
+name: skill-name
+version: 1.0.0
+author: @username
+description: 简短描述技能功能
+
+tags:
+  - category1
+  - category2
+
+triggers:
+  - keyword1
+  - keyword2
+  - "exact phrase"
+
+dependencies: []  # 依赖的其他技能
+
+difficulty: beginner  # beginner | intermediate | advanced
+
+# 模板文件
+templates:
+  - name: default
+    file: templates/default.md
+
+# 示例文件
+examples:
+  - name: basic
+    file: examples/basic.md

@@ -1,0 +1,33 @@
+name: manus-kickoff
+version: 1.0.0
+author: sumulige
+description: Manus 风格项目启动流程 - AI 2.0 开发范式
+
+tags:
+  - workflow
+  - planning
+  - manuscript
+  - ai-2.0
+
+triggers:
+  - project kickoff
+  - manus style
+  - project planning
+  - 启动项目
+  - 项目规划
+
+dependencies: []
+
+difficulty: intermediate
+
+templates:
+  - name: kickoff
+    file: templates/PROJECT_KICKOFF.md
+  - name: task-plan
+    file: templates/TASK_PLAN.md
+  - name: proposal
+    file: templates/PROJECT_PROPOSAL.md
+
+examples:
+  - name: basic
+    file: examples/basic.md

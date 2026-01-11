@@ -1,0 +1,15 @@
+{
+  "skills": [
+    {
+      "name": "api-tester",
+      "description": "TODO: Add description for api-tester",
+      "keywords": [
+        "api tester"
+      ],
+      "path": ".claude/skills/api-tester/SKILL.md"
+    }
+  ],
+  "auto_load": {
+    "enabled": true
+  }
+}

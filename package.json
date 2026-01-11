@@ -4,6 +4,7 @@
   "description": "The Best Agent Harness for Claude Code",
   "main": "cli.js",
   "bin": {
+    "omc": "./cli.js",
     "oh-my-claude": "./cli.js"
   },
   "scripts": {

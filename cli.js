@@ -97,6 +97,8 @@ const commands = {
     const projectDir = process.cwd();
     const projectConfigDir = path.join(projectDir, '.claude');
     const agentsFile = path.join(projectConfigDir, 'AGENTS.md');
+    const readmeFile = path.join(projectConfigDir, 'README.md');
+    const templateReadme = path.join(TEMPLATE_DIR, '.claude', 'README.md');
 
     // 创建 .claude 目录
     if (!fs.existsSync(projectConfigDir)) {
@@ -111,6 +113,51 @@ const commands = {
     const agentsMd = generateAgentsMd(config);
     fs.writeFileSync(agentsFile, agentsMd);
     console.log('✅ Created AGENTS.md');
+
+    // 静默同步 README.md（如果 template 更新了）
+    if (fs.existsSync(templateReadme)) {
+      const templateContent = fs.readFileSync(templateReadme, 'utf-8');
+      let needsUpdate = true;
+
+      // 检查是否需要更新（比较文件内容）
+      if (fs.existsSync(readmeFile)) {
+        const existingContent = fs.readFileSync(readmeFile, 'utf-8');
+        // 提取版本标记（如果有）
+        const templateVersion = templateContent.match(/@version:\s*(\d+\.\d+\.\d+)/)?.[1] || '0.0.0';
+        const existingVersion = existingContent.match(/@version:\s*(\d+\.\d+\.\d+)/)?.[1] || '0.0.0';
+        needsUpdate = templateVersion !== existingVersion;
+      }
+
+      if (needsUpdate) {
+        fs.writeFileSync(readmeFile, templateContent);
+        // 静默更新，不输出
+      }
+    }
+
+    // 同步 todos 目录结构
+    const todosTemplateDir = path.join(TEMPLATE_DIR, 'development', 'todos');
+    const todosProjectDir = path.join(projectDir, 'development', 'todos');
+
+    if (fs.existsSync(todosTemplateDir)) {
+      // 复制 todos 模板文件（如果不存在）
+      const copyRecursive = (src, dest) => {
+        if (!fs.existsSync(dest)) {
+          fs.mkdirSync(dest, { recursive: true });
+        }
+        const entries = fs.readdirSync(src, { withFileTypes: true });
+        for (const entry of entries) {
+          const srcPath = path.join(src, entry.name);
+          const destPath = path.join(dest, entry.name);
+          if (entry.isDirectory()) {
+            copyRecursive(srcPath, destPath);
+          } else if (!fs.existsSync(destPath)) {
+            fs.copyFileSync(srcPath, destPath);
+          }
+        }
+      };
+      copyRecursive(todosTemplateDir, todosProjectDir);
+      // 静默同步，不输出
+    }
 
     // 同步技能
     try {
@@ -167,6 +214,201 @@ const commands = {
       console.log(result);
     } catch (e) {
       console.log('⚠️  OpenSkills not installed. Run: npm i -g openskills');
+    }
+  },
+
+  'skill:create': (skillName) => {
+    if (!skillName) {
+      console.log('Usage: oh-my-claude skill:create <skill-name>');
+      console.log('');
+      console.log('Example: oh-my-claude skill:create api-tester');
+      console.log('');
+      console.log('The skill will be created at:');
+      console.log('  .claude/skills/<skill-name>/');
+      return;
+    }
+
+    // 验证 skill 名称 (kebab-case)
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(skillName)) {
+      console.log('❌ Invalid skill name. Use kebab-case (e.g., api-tester, code-reviewer)');
+      return;
+    }
+
+    const projectDir = process.cwd();
+    const skillsDir = path.join(projectDir, '.claude', 'skills');
+    const skillDir = path.join(skillsDir, skillName);
+    const templateDir = path.join(TEMPLATE_DIR, '.claude', 'skills', 'template');
+
+    // 检查技能是否已存在
+    if (fs.existsSync(skillDir)) {
+      console.log(`⚠️  Skill "${skillName}" already exists at ${skillDir}`);
+      return;
+    }
+
+    console.log(`📝 Creating skill: ${skillName}`);
+    console.log('');
+
+    // 创建技能目录结构
+    fs.mkdirSync(path.join(skillDir, 'templates'), { recursive: true });
+    fs.mkdirSync(path.join(skillDir, 'examples'), { recursive: true });
+    console.log('✅ Created directory structure');
+
+    // 复制模板文件
+    if (fs.existsSync(templateDir)) {
+      const skillTemplate = fs.readFileSync(path.join(templateDir, 'SKILL.md'), 'utf-8');
+      const metadataTemplate = fs.readFileSync(path.join(templateDir, 'metadata.yaml'), 'utf-8');
+
+      // 替换占位符
+      const date = new Date().toISOString().split('T')[0];
+      let skillContent = skillTemplate
+        .replace(/Skill Name/g, toTitleCase(skillName.replace(/-/g, ' ')))
+        .replace(/{current-date}/g, date)
+        .replace(/skill-name/g, skillName);
+
+      let metadataContent = metadataTemplate
+        .replace(/skill-name/g, skillName)
+        .replace(/dependencies: \[\]/g, 'dependencies: []')  // 保持依赖为空，用户手动添加
+        .replace(/difficulty: beginner/g, 'difficulty: beginner');  // 默认难度
+
+      fs.writeFileSync(path.join(skillDir, 'SKILL.md'), skillContent);
+      fs.writeFileSync(path.join(skillDir, 'metadata.yaml'), metadataContent);
+      console.log('✅ Created SKILL.md and metadata.yaml');
+    }
+
+    // 创建示例模板
+    fs.writeFileSync(
+      path.join(skillDir, 'templates', 'default.md'),
+      `# Default Template for ${skillName}\n\nReplace this with your actual template.\n`
+    );
+    fs.writeFileSync(
+      path.join(skillDir, 'examples', 'basic.md'),
+      `# Basic Example for ${skillName}\n\nReplace this with your actual example.\n`
+    );
+    console.log('✅ Created templates and examples');
+
+    // 更新 RAG 索引
+    const ragDir = path.join(projectDir, '.claude', 'rag');
+    const ragIndexFile = path.join(ragDir, 'skill-index.json');
+    let ragIndex = { skills: [], auto_load: { enabled: true } };
+
+    // 确保 rag 目录存在
+    if (!fs.existsSync(ragDir)) {
+      fs.mkdirSync(ragDir, { recursive: true });
+    }
+
+    if (fs.existsSync(ragIndexFile)) {
+      try {
+        ragIndex = JSON.parse(fs.readFileSync(ragIndexFile, 'utf-8'));
+      } catch (e) {}
+    }
+
+    // 添加新技能到索引
+    const newSkill = {
+      name: skillName,
+      description: `TODO: Add description for ${skillName}`,
+      keywords: [skillName.replace(/-/g, ' ')],
+      path: `.claude/skills/${skillName}/SKILL.md`
+    };
+
+    // 避免重复
+    if (!ragIndex.skills.some(s => s.name === skillName)) {
+      ragIndex.skills.push(newSkill);
+      fs.writeFileSync(ragIndexFile, JSON.stringify(ragIndex, null, 2));
+      console.log('✅ Updated RAG skill index');
+    }
+
+    console.log('');
+    console.log('✅ Skill created successfully!');
+    console.log('');
+    console.log(`Next steps:`);
+    console.log(`  1. Edit .claude/skills/${skillName}/SKILL.md`);
+    console.log(`  2. Add your templates and examples`);
+    console.log(`  3. Use in Claude Code: /skill ${skillName}`);
+  },
+
+  'skill:check': (skillName) => {
+    const projectDir = process.cwd();
+    const skillsDir = path.join(projectDir, '.claude', 'skills');
+
+    console.log('🔍 Checking skill dependencies...');
+    console.log('');
+
+    const checkSkill = (name, visited = new Set()) => {
+      if (visited.has(name)) {
+        console.log(`⚠️  Circular dependency detected: ${name}`);
+        return;
+      }
+      visited.add(name);
+
+      const skillDir = path.join(skillsDir, name);
+      const metadataFile = path.join(skillDir, 'metadata.yaml');
+
+      if (!fs.existsSync(skillDir)) {
+        console.log(`❌ Skill "${name}" not found`);
+        return;
+      }
+
+      if (!fs.existsSync(metadataFile)) {
+        console.log(`ℹ️  ${name}: No metadata.yaml`);
+        return;
+      }
+
+      // 简单解析 YAML（只支持基本的 key: value 格式）
+      const parseSimpleYaml = (content) => {
+        const result = {};
+        content.split('\n').forEach(line => {
+          const match = line.match(/^(\w+):\s*(.*)$/);
+          if (match) {
+            const value = match[2].trim();
+            if (value === '[]') {
+              result[match[1]] = [];
+            } else if (value.startsWith('[')) {
+              try {
+                result[match[1]] = JSON.parse(value.replace(/'/g, '"'));
+              } catch (e) {
+                result[match[1]] = [];
+              }
+            } else {
+              result[match[1]] = value;
+            }
+          }
+        });
+        return result;
+      };
+
+      const metadata = parseSimpleYaml(fs.readFileSync(metadataFile, 'utf-8'));
+      const deps = metadata.dependencies || [];
+
+      if (deps.length === 0) {
+        console.log(`✅ ${name}: No dependencies`);
+        return;
+      }
+
+      console.log(`📦 ${name} depends on:`);
+      deps.forEach(dep => {
+        const depDir = path.join(skillsDir, dep);
+        if (fs.existsSync(depDir)) {
+          console.log(`   ✅ ${dep}`);
+          checkSkill(dep, new Set(visited));
+        } else {
+          console.log(`   ❌ ${dep} (missing)`);
+        }
+      });
+    };
+
+    if (skillName) {
+      checkSkill(skillName);
+    } else {
+      // 检查所有技能
+      const allSkills = fs.existsSync(skillsDir)
+        ? fs.readdirSync(skillsDir).filter(f => {
+            const dir = path.join(skillsDir, f);
+            return fs.statSync(dir).isDirectory() && f !== 'template' && f !== 'examples';
+          })
+        : [];
+
+      console.log(`Found ${allSkills.length} skills\n`);
+      allSkills.forEach(skill => checkSkill(skill));
     }
   },
 
@@ -433,6 +675,10 @@ function loadConfig() {
   return DEFAULT_CONFIG;
 }
 
+function toTitleCase(str) {
+  return str.replace(/\b\w/g, char => char.toUpperCase());
+}
+
 function generateAgentsMd(config) {
   const agentsList = Object.entries(config.agents)
     .map(([name, agent]) => `### ${name}\n- **Model**: ${agent.model}\n- **Role**: ${agent.role}`)
@@ -481,6 +727,10 @@ function main() {
     commands.status();
   } else if (cmd === 'skill:list') {
     commands['skill:list']();
+  } else if (cmd === 'skill:create') {
+    commands['skill:create'](arg);
+  } else if (cmd === 'skill:check') {
+    commands['skill:check'](arg);
   } else if (cmd === 'skill:install') {
     commands['skill:install'](arg);
   } else if (cmd === 'template') {
@@ -488,9 +738,10 @@ function main() {
   } else if (cmd === 'kickoff') {
     commands.kickoff();
   } else {
-    console.log('Oh My Claude - Agent Harness for Claude Code (Manus-style)');
+    console.log('Oh My Claude (omc) - Agent Harness for Claude Code');
     console.log('');
-    console.log('Usage: oh-my-claude <command> [args]');
+    console.log('Usage: omc <command> [args]');
+    console.log('   (or: oh-my-claude <command> [args])');
     console.log('');
     console.log('Commands:');
     console.log('  init              Initialize configuration');
@@ -500,16 +751,20 @@ function main() {
     console.log('  agent <task>      Run agent orchestration');
     console.log('  status            Show configuration status');
     console.log('  skill:list        List installed skills');
+    console.log('  skill:create <n>  Create a new skill');
+    console.log('  skill:check [n]   Check skill dependencies');
     console.log('  skill:install <s> Install a skill');
     console.log('');
     console.log('Examples:');
-    console.log('  oh-my-claude init');
-    console.log('  oh-my-claude sync');
-    console.log('  oh-my-claude template');
-    console.log('  oh-my-claude template /path/to/project');
-    console.log('  oh-my-claude kickoff        # Start project planning');
-    console.log('  oh-my-claude agent "Build a REST API"');
-    console.log('  oh-my-claude skill:install anthropics/skills');
+    console.log('  omc init');
+    console.log('  omc sync');
+    console.log('  omc template');
+    console.log('  omc template /path/to/project');
+    console.log('  omc kickoff        # Start project planning');
+    console.log('  omc agent "Build a REST API"');
+    console.log('  omc skill:create api-tester');
+    console.log('  omc skill:check manus-kickoff');
+    console.log('  omc skill:install anthropics/skills');
   }
 }
 

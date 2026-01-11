@@ -24,6 +24,10 @@
     {
       "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
       "timeout": 1
+    },
+    {
+      "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
+      "timeout": 1
     }
   ]
 }

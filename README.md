@@ -12,11 +12,13 @@ Oh My Claude 是一个专为 Claude Code 设计的配置管理和多 Agent 协�
 2. [为什么使用它？](#为什么使用它)
 3. [Boris 最佳实践](#boris-最佳实践)
 4. [Manus 风格工作流](#manus-风格工作流)
-5. [快速开始](#快速开始)
-6. [详细使用指南](#详细使用指南)
-7. [项目模板功能](#项目模板功能)
-8. [常见问题](#常见问题)
-9. [命令参考](#命令参考)
+5. [技能系统](#技能系统)
+6. [TODO 管理](#todo-管理)
+7. [快速开始](#快速开始)
+8. [详细使用指南](#详细使用指南)
+9. [项目模板功能](#项目模板功能)
+10. [常见问题](#常见问题)
+11. [命令参考](#命令参考)
 
 ---
 
@@ -158,7 +160,7 @@ Oh My Claude 采用 **Manus 风格**的 AI 2.0 开发范式，强调项目启动
 │                  AI Project Kickoff Workflow               │
 ├─────────────────────────────────────────────────────────────┤
 │                                                             │
-│  1. 运行 oh-my-claude kickoff                              │
+│  1. 运行 omc kickoff                                        │
 │     ↓                                                       │
 │  2. AI 生成任务计划 (TASK_PLAN.md)                         │
 │     ├── 任务分解 (WBS)                                      │
@@ -186,10 +188,10 @@ Oh My Claude 采用 **Manus 风格**的 AI 2.0 开发范式，强调项目启动
 mkdir my-project && cd my-project
 
 # 2. 部署模板
-oh-my-claude template
+omc template
 
 # 3. 启动项目规划
-oh-my-claude kickoff
+omc kickoff
 
 # 4. 回答 AI 的问题，等待生成计划
 #    - 项目名称？
@@ -222,6 +224,89 @@ oh-my-claude kickoff
 
 ---
 
+## 技能系统
+
+> 创建和管理可复用的 Claude 技能
+
+Oh My Claude 提供完整的技能系统，让 AI 能力模块化、可复用。
+
+### 创建技能
+
+```bash
+omc skill:create my-skill
+```
+
+自动生成：
+```
+.claude/skills/my-skill/
+├── SKILL.md          # 技能定义
+├── metadata.yaml     # 元数据
+├── templates/        # 模板文件
+└── examples/         # 使用示例
+```
+
+### 技能依赖管理
+
+```bash
+# 检查技能依赖
+omc skill:check my-skill
+
+# 检查所有技能
+omc skill:check
+```
+
+### 内置技能
+
+| 技能 | 说明 |
+|------|------|
+| **manus-kickoff** | Manus 风格项目启动流程 |
+| **template** | 技能创建模板 |
+| **examples** | 示例技能库 |
+
+### 示例库
+
+- `basic-task` - 基础任务处理模板
+- `feature-development` - 功能开发工作流
+- `bug-fix-workflow` - Bug 修复流程
+
+---
+
+## TODO 管理
+
+> AI 自动维护的任务追踪系统
+
+Oh My Claude 内置 TODO 任务管理系统，支持点击跳转和 AI 自动更新。
+
+### 目录结构
+
+```
+development/todos/
+├── INDEX.md       # 任务总览（可点击跳转）
+├── active/        # 🚧 进行中的任务
+├── completed/     # ✅ 已完成的任务
+├── backlog/       # 📋 待办任务
+└── archived/      # 📦 已归档任务
+```
+
+### 使用方式
+
+```bash
+# 查看任务总览
+cat development/todos/INDEX.md
+
+# 在 Claude Code 中
+/todos    # 管理任务命令
+```
+
+### AI 自动维护
+
+- 任务创建时自动添加索引
+- 任务状态变更自动更新
+- 支持点击跳转到具体任务
+- 静默运行，不打扰工作流
+
+---
+
 ## 快速开始
 
 ### 第一步：安装 Node.js
@@ -244,7 +329,7 @@ npm install -g oh-my-claude
 ### 第三步：初始化配置
 
 ```bash
-oh-my-claude init
+omc init
 ```
 
 这会创建 `~/.claude/config.json` 配置文件。
@@ -252,7 +337,7 @@ oh-my-claude init
 ### 第四步：验证安装
 
 ```bash
-oh-my-claude status
+omc status
 ```
 
 你应该看到类似输出：
@@ -283,6 +368,8 @@ ThinkingLens: ✅ Enabled
 
 恭喜！安装成功了！
 
+> **提示**: 使用 `omc` 命令更简洁，或者继续使用 `oh-my-claude` 长命令。
+
 ---
 
 ## 详细使用指南
@@ -300,13 +387,13 @@ Oh My Claude 内置了一个完整的项目模板，包含：
 
 ```bash
 cd /path/to/your/project
-oh-my-claude template
+omc template
 ```
 
 **指定目录创建项目：**
 
 ```bash
-oh-my-claude template /path/to/project
+omc template /path/to/project
 ```
 
 创建后，项目结构如下：
@@ -334,7 +421,7 @@ your-project/
 
 ```bash
 cd /path/to/your/project
-oh-my-claude sync
+omc sync
 ```
 
 这会创建 `.claude/AGENTS.md` 文件，Claude Code 会自动识别。
@@ -365,13 +452,13 @@ oh-my-claude sync
 
 ```bash
 # 查看已安装的技能
-oh-my-claude skill:list
+omc skill:list
 
 # 安装新技能
-oh-my-claude skill:install anthropics/skills
+omc skill:install anthropics/skills
 
 # 同步到项目
-oh-my-claude sync
+omc sync
 ```
 
 ### 5. 自定义配置
@@ -411,7 +498,7 @@ nano ~/.claude/config.json
 }
 ```
 
-修改后运行 `oh-my-claude sync` 更新项目。
+修改后运行 `omc sync` 更新项目。
 
 ---
 
@@ -479,6 +566,9 @@ source ~/.zshrc
 # 使用 sudo
 sudo npm install -g oh-my-claude
 
+# 然后创建短命令链接
+npm link
+
 # 或者配置 npm 使用用户目录
 mkdir ~/.npm-global
 npm config set prefix '~/.npm-global'
@@ -517,7 +607,7 @@ npm install -g openskills
 rm -rf ~/.claude
 
 # 重新初始化
-oh-my-claude init
+omc init
 ```
 
 ### Q6: Agent 可以用不同的模型吗？
@@ -543,34 +633,38 @@ oh-my-claude init
 
 ## 命令参考
 
+> 支持 `omc` 短命令和 `oh-my-claude` 长命令
+
 ### 基础命令
 
 | 命令 | 说明 | 示例 |
 |------|------|------|
-| `init` | 初始化配置 | `oh-my-claude init` |
-| `status` | 查看状态 | `oh-my-claude status` |
-| `sync` | 同步到项目 | `oh-my-claude sync` |
+| `init` | 初始化配置 | `omc init` |
+| `status` | 查看状态 | `omc status` |
+| `sync` | 同步到项目 | `omc sync` |
 
 ### 项目模板
 
 | 命令 | 说明 | 示例 |
 |------|------|------|
-| `template [path]` | 部署项目模板 | `oh-my-claude template` |
-| `template <path>` | 指定目录部署 | `oh-my-claude template ~/my-project` |
-| `kickoff` | **启动项目规划 (Manus 风格)** | `oh-my-claude kickoff` |
+| `template [path]` | 部署项目模板 | `omc template` |
+| `template <path>` | 指定目录部署 | `omc template ~/my-project` |
+| `kickoff` | **启动项目规划 (Manus 风格)** | `omc kickoff` |
 
 ### 技能管理
 
 | 命令 | 说明 | 示例 |
 |------|------|------|
-| `skill:list` | 列出技能 | `oh-my-claude skill:list` |
-| `skill:install <source>` | 安装技能 | `oh-my-claude skill:install anthropics/skills` |
+| `skill:list` | 列出技能 | `omc skill:list` |
+| `skill:create <name>` | 创建新技能 | `omc skill:create api-tester` |
+| `skill:check [name]` | 检查技能依赖 | `omc skill:check manus-kickoff` |
+| `skill:install <source>` | 安装技能 | `omc skill:install anthropics/skills` |
 
 ### Agent 编排
 
 | 命令 | 说明 | 示例 |
 |------|------|------|
-| `agent <task>` | 启动编排 | `oh-my-claude agent "Build a REST API"` |
+| `agent <task>` | 启动编排 | `omc agent "Build a REST API"` |
 
 ---
 
@@ -722,8 +816,8 @@ MIT
 ## 获取帮助
 
 - 遇到问题？查看 [常见问题](#常见问题)
-- 需要更多信息？运行 `oh-my-claude status`
-- 查看完整命令：运行 `oh-my-claude` 不带参数
+- 需要更多信息？运行 `omc status`
+- 查看完整命令：运行 `omc` 不带参数
 
 ---
 

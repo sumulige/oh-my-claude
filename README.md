@@ -273,9 +273,9 @@ omc skill:check
 
 ## TODO 管理
 
-> AI 自动维护的任务追踪系统
+> AI 自动维护的任务追踪系统（支持优先级分组）
 
-Oh My Claude 内置 TODO 任务管理系统，支持点击跳转和 AI 自动更新。
+Oh My Claude 内置 TODO 任务管理系统，支持按优先级（P0/P1/P2）分组和 AI 自动更新。
 
 ### 目录结构
 
@@ -291,18 +291,48 @@ development/todos/
 ### 使用方式
 
 ```bash
-# 查看任务总览
+# 查看项目状态（包含 todos 进度）
+omc status
+
+# 查看完整任务总览
 cat development/todos/INDEX.md
 
 # 在 Claude Code 中
-/todos    # 管理任务命令
+查看 todos    # AI 会读取 INDEX.md
 ```
+
+### omc status 输出示例
+
+```
+📊 Project Tasks:
+
+  Total: █████████░░░░░░░░░░░ 46%
+  P0:   ████████████████████ 100% (4/4)
+  P1:   ░░░░░░░░░░░░░░░░░░░░ 0%  (0/3)
+  P2:   ███████░░░░░░░░░░░░░ 33%  (2/6)
+
+  🚧 Active:    0
+  ✅ Completed: 6
+  📋 Backlog:   7
+
+  View: cat development/todos/INDEX.md
+```
+
+### 优先级说明
+
+| 优先级 | 名称 | 用途 |
+|--------|------|------|
+| P0 | 关键任务 | 阻塞发布，必须完成 |
+| P1 | 高优先级 | 重要功能，下个里程碑 |
+| P2 | 中优先级 | 正常功能开发 |
+| P3 | 低优先级 | 改进优化，有空再做 |
 
 ### AI 自动维护
 
 - 任务创建时自动添加索引
 - 任务状态变更自动更新
 - 支持点击跳转到具体任务
+- 按优先级和状态双重视图
 - 静默运行，不打扰工作流
 
 ---
@@ -364,6 +394,9 @@ Agents:
 Skills: anthropics/skills, numman-ali/n-skills
 
 ThinkingLens: ✅ Enabled
+
+📋 Project Tasks:
+  (not initialized - run `omc template` first)
 ```
 
 恭喜！安装成功了！

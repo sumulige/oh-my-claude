@@ -1,6 +1,6 @@
 {
   "name": "sumulige-claude",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "The Best Agent Harness for Claude Code",
   "main": "cli.js",
   "bin": {

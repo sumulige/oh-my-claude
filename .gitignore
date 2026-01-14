@@ -48,3 +48,4 @@ coverage/
 .claude/export/
 .claude/thinking-routes/.conversation-flow.json
 .claude/thinking-routes/.current-session
+.claude/DAILY_CONVERSATION.md

@@ -1,51 +1,115 @@
 {
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/project-kickoff.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/rag-skill-loader.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/code-formatter.cjs",
-            "timeout": 5000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/verify-work.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
-            "timeout": 1000
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/conversation-logger.cjs",
-            "timeout": 1000
-          }
-        ]
-      }
-    ]
-  }
+  "UserPromptSubmit": [
+    {
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/project-kickoff.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/rag-skill-loader.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
+          "timeout": 1000
+        }
+      ]
+    }
+  ],
+  "PreToolUse": [
+    {
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
+          "timeout": 1000
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/code-formatter.cjs",
+          "timeout": 5000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/verify-work.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
+          "timeout": 1000
+        }
+      ]
+    }
+  ],
+  "AgentStop": [
+    {
+      "matcher": {},
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/verify-work.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/thinking-silent.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/multi-session.cjs",
+          "timeout": 1000
+        },
+        {
+          "type": "command",
+          "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/todo-manager.cjs",
+          "timeout": 1000
+        }
+      ]
+    }
+  ]
 }

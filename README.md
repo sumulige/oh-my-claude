@@ -743,29 +743,29 @@ smc init
 
 ### 完整配置示例
 
+> v1.0.6+ 支持配置外置，默认配置位于 `config/defaults.json`
+
+用户配置可覆盖默认值（`~/.claude/config.json`）：
+
 ```json
 {
-  "version": "1.0.0",
+  "version": "1.0.6",
+  "model": "claude-opus-4.5",
 
   "agents": {
     "conductor": {
-      "model": "claude-opus-4.5",
       "role": "Task coordination and decomposition"
     },
     "architect": {
-      "model": "claude-opus-4.5",
       "role": "Architecture design and decisions"
     },
     "builder": {
-      "model": "claude-opus-4.5",
       "role": "Code implementation and testing"
     },
     "reviewer": {
-      "model": "claude-opus-4.5",
       "role": "Code review and quality check"
     },
     "librarian": {
-      "model": "claude-opus-4.5",
       "role": "Documentation and knowledge"
     }
   },
@@ -787,6 +787,10 @@ smc init
   }
 }
 ```
+
+**注意**：
+- `model` 字段可作为全局默认值
+- 各 Agent 可单独指定 `model` 覆盖全局设置
 
 ---
 
@@ -823,6 +827,16 @@ Hooks 是在特定事件触发的脚本：
 ---
 
 ## 更新日志
+
+### v1.0.6 (2026-01-14)
+
+- **代码重构**：cli.js 从 862 行拆分为模块化结构
+  - `lib/commands.js` - 命令实现（~700 行）
+  - `lib/config.js` - 配置管理（~70 行）
+  - `lib/utils.js` - 公共工具函数（~60 行）
+- **配置外置**：默认配置移至 `config/defaults.json`
+- **数据驱动**：命令分发改为零 if-else 的数据驱动模式
+- **消除重复**：`copyRecursive` 等公共函数统一管理
 
 ### v1.0.0 (2026-01-11)
 

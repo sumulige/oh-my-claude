@@ -1,0 +1,34 @@
+{
+  "version": "1.0.7",
+  "model": "claude-opus-4.5",
+  "agents": {
+    "conductor": {
+      "role": "Task coordination and decomposition"
+    },
+    "architect": {
+      "role": "Architecture design and decisions"
+    },
+    "builder": {
+      "role": "Code implementation and testing"
+    },
+    "reviewer": {
+      "role": "Code review and quality check"
+    },
+    "librarian": {
+      "role": "Documentation and knowledge"
+    }
+  },
+  "skills": [
+    "anthropics/skills",
+    "numman-ali/n-skills"
+  ],
+  "hooks": {
+    "preTask": [],
+    "postTask": []
+  },
+  "thinkingLens": {
+    "enabled": true,
+    "autoSync": true,
+    "syncInterval": 20
+  }
+}

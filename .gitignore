@@ -39,3 +39,12 @@ coverage/
 # Temporary files
 *.tmp
 .cache/
+
+# Thinking Chain - Conversation & Decision History
+# 对话记录和决策历史不提交到 git
+.claude/transcripts/
+.claude/decisions/
+.claude/code-trace/
+.claude/export/
+.claude/thinking-routes/.conversation-flow.json
+.claude/thinking-routes/.current-session

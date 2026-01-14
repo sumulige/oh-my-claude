@@ -5,6 +5,7 @@
 
 [![npm version](https://badge.fury.io/js/sumulige-claude.svg)](https://www.npmjs.com/package/sumulige-claude)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)](./tests)
 
 ---
 
@@ -230,10 +231,31 @@ smc kickoff
 
 ---
 
+## Testing / 测试
+
+```bash
+# Run tests / 运行测试
+npm test
+
+# Run with coverage / 运行测试并生成覆盖率报告
+npm run test:coverage
+```
+
+**Coverage / 覆盖率**:
+- utils.js: 100%
+- migrations.js: 86.66%
+- config.js: 86.2%
+- Overall: 36.58%
+
+See **[tests/README.md](tests/README.md)** for detailed test documentation.
+
+---
+
 ## Documentation / 文档
 
 - **[Development Guide / 开发指南](docs/DEVELOPMENT.md)** - Architecture, adding skills, sync mechanism / 架构、添加技能、同步机制
 - **[Marketplace Guide / 市场指南](docs/MARKETPLACE.md)** - User guide for marketplace features / 市场功能用户指南
+- **[Tests Documentation / 测试文档](tests/README.md)** - Test coverage and strategy / 测试覆盖率和策略
 
 ---
 

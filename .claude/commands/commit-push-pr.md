@@ -22,7 +22,27 @@ Analyze the changes and:
 2. Identify the main purpose of the changes
 3. Check if there are any sensitive files that shouldn't be committed
 
-## Step 3: Stage and Commit
+## Step 3: Code Simplification (Before Commit)
+
+**IMPORTANT**: Before creating the commit, simplify and refine the code changes:
+
+1. Review the recently modified code sections
+2. Apply code simplification focusing on:
+   - Code clarity and consistency
+   - Reducing unnecessary complexity and nesting
+   - Eliminating redundant code and abstractions
+   - Following project standards (if CLAUDE.md exists)
+   - Preserving exact functionality
+3. Use explicit, readable code over overly compact solutions
+
+**Trigger phrases to apply simplification**:
+- "简化此代码" (Simplify this code)
+- "使这更清晰" (Make this clearer)
+- "优化此实现" (Optimize this implementation)
+
+Ask the user: "是否需要简化代码？(Need code simplification?)" - if yes, apply code-simplifier agent before proceeding.
+
+## Step 4: Stage and Commit
 
 If there are unstaged changes that should be included, ask the user first.
 
@@ -36,7 +56,7 @@ Then create a commit with a clear message following this format:
 Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 ```
 
-## Step 4: Push and Create PR
+## Step 5: Push and Create PR
 
 1. Push the changes to remote
 2. Check if there's an open PR for this branch using:
@@ -51,7 +71,7 @@ Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
      - Test plan (checklist)
      - Link to any related issues
 
-## Step 5: Verify
+## Step 6: Verify
 
 After creating the PR, show the PR URL and check CI status using:
 ```bash

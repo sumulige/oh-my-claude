@@ -4,39 +4,39 @@
 
 ## Agent Orchestration
 
-This project uses **Oh My Claude** for multi-agent collaboration.
+This project uses **Sumulige Claude** for multi-agent collaboration.
 
 ### conductor
-- **Model**: claude-opus-4.5
+- **Model**: claude-opus-4-5-20251101
 - **Role**: Task coordination and decomposition
 
 ### architect
-- **Model**: claude-opus-4.5
+- **Model**: claude-opus-4-5-20251101
 - **Role**: Architecture design and decisions
 
 ### builder
-- **Model**: claude-opus-4.5
+- **Model**: claude-opus-4-5-20251101
 - **Role**: Code implementation and testing
 
 ### reviewer
-- **Model**: claude-opus-4.5
+- **Model**: claude-opus-4-5-20251101
 - **Role**: Code review and quality check
 
 ### librarian
-- **Model**: claude-opus-4.5
+- **Model**: claude-opus-4-5-20251101
 - **Role**: Documentation and knowledge
 
 ## Usage
 
 ```bash
 # View agent status
-oh-my-claude status
+sumulige-claude status
 
 # Run agent task
-oh-my-claude agent <task>
+sumulige-claude agent <task>
 
 # List skills
-oh-my-claude skill:list
+sumulige-claude skill:list
 ```
 
 </skills_system>

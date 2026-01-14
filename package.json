@@ -8,7 +8,9 @@
     "sumulige-claude": "cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
     "postinstall": "node cli.js init",
     "sync": "node scripts/sync-external.mjs",
     "update-registry": "node scripts/update-registry.mjs",
@@ -35,7 +37,10 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "jest": "^30.2.0",
+    "mock-fs": "^5.5.0",
     "prettier": "^3.7.4",
+    "sinon": "^21.0.1",
     "yaml": "^2.8.2"
   }
 }

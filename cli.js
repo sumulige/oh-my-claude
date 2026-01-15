@@ -30,7 +30,7 @@ const COMMANDS = {
   },
   sync: {
     help: 'Sync to current project (auto-migrates old format)',
-    args: ''
+    args: '[--check-update]'
   },
   migrate: {
     help: 'Migrate old hooks format to new',
@@ -158,7 +158,8 @@ function showHelp() {
   console.log('');
   console.log('Examples:');
   console.log('  smc init');
-  console.log('  smc sync            # Auto-migrates old format');
+  console.log('  smc sync            # Sync to current project');
+  console.log('  smc sync --check-update  # Force check for updates');
   console.log('  smc migrate         # Manual migration');
   console.log('  smc template          # Deploy to current dir (with backup)');
   console.log('  smc template /path/to/project');

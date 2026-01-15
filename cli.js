@@ -20,6 +20,10 @@ const { marketplaceCommands } = require('./lib/marketplace');
 // ============================================================================
 
 const COMMANDS = {
+  version: {
+    help: 'Show version and check for updates',
+    args: ''
+  },
   init: {
     help: 'Initialize configuration',
     args: '[--interactive]'
@@ -181,6 +185,12 @@ function showHelp() {
 
 function main() {
   const [cmd, ...args] = process.argv.slice(2);
+
+  // Handle --version flag
+  if (cmd === '--version' || cmd === '-v') {
+    runCommand('version', []);
+    return;
+  }
 
   if (!cmd) {
     showHelp();

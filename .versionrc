@@ -1,0 +1,25 @@
+{
+  "types": [
+    { "type": "feat", "section": "Added" },
+    { "type": "fix", "section": "Fixed" },
+    { "type": "chore", "hidden": false },
+    { "type": "docs", "section": "Changed", "hidden": false },
+    { "type": "style", "hidden": true },
+    { "type": "refactor", "section": "Changed" },
+    { "type": "perf", "section": "Changed" },
+    { "type": "test", "hidden": false }
+  ],
+  "commitUrlFormat": "https://github.com/sumulige/sumulige-claude/commits/{{hash}}",
+  "compareUrlFormat": "https://github.com/sumulige/sumulige-claude/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/sumulige/sumulige-claude/issues/{{id}}",
+  "bumpFiles": [
+    {
+      "filename": "package.json",
+      "type": "json"
+    }
+  ],
+  "skip": {
+    "tag": true,
+    "commit": false
+  }
+}

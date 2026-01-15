@@ -14,7 +14,11 @@
     "postinstall": "node cli.js init",
     "sync": "node scripts/sync-external.mjs",
     "update-registry": "node scripts/update-registry.mjs",
-    "sync:all": "npm run sync && npm run update-registry"
+    "sync:all": "npm run sync && npm run update-registry",
+    "release": "standard-version",
+    "release:patch": "standard-version --release-as patch",
+    "release:minor": "standard-version --release-as minor",
+    "release:major": "standard-version --release-as major"
   },
   "keywords": [
     "claude",
@@ -41,6 +45,7 @@
     "mock-fs": "^5.5.0",
     "prettier": "^3.7.4",
     "sinon": "^21.0.1",
+    "standard-version": "^9.5.0",
     "yaml": "^2.8.2"
   }
 }

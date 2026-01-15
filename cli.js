@@ -193,6 +193,12 @@ function main() {
     return;
   }
 
+  // Handle help command
+  if (cmd === 'help' || cmd === '--help' || cmd === '-h') {
+    showHelp();
+    return;
+  }
+
   if (!cmd) {
     showHelp();
     return;

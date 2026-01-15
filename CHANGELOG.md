@@ -1,9 +1,21 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.1.0](https://github.com/sumulige/sumulige-claude/compare/v1.0.11...v1.1.0) (2026-01-15)
+
+
+### Changed
+
+* sync documentation with v1.0.11 ([b00c509](https://github.com/sumulige/sumulige-claude/commits/b00c50928038bf8a4a655e81712420cd3294935d))
+
+
+* add standard-version for automated releases ([32522fa](https://github.com/sumulige/sumulige-claude/commits/32522fa912dd26a4540cba10532c24d4e29e6daf))
+
+
+### Added
+
+* add test-workflow skill and enhance CLI commands ([972a676](https://github.com/sumulige/sumulige-claude/commits/972a6762411c5f863d9bfa3e360df7dc7f379aab))
 
 ## [1.0.11] - 2026-01-15
 

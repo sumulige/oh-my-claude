@@ -1,0 +1,61 @@
+{
+  "enabled": true,
+  "severity": "warn",
+  "rules": [
+    {
+      "id": "line-count-limit",
+      "enabled": true,
+      "severity": "error",
+      "config": {
+        "maxLines": 800
+      }
+    },
+    {
+      "id": "file-size-limit",
+      "enabled": true,
+      "severity": "warn",
+      "config": {
+        "maxSize": 819200
+      }
+    },
+    {
+      "id": "no-empty-files",
+      "enabled": true,
+      "severity": "warn"
+    },
+    {
+      "id": "no-trailing-whitespace",
+      "enabled": true,
+      "severity": "warn"
+    },
+    {
+      "id": "todo-comments",
+      "enabled": true,
+      "severity": "info"
+    },
+    {
+      "id": "directory-depth",
+      "enabled": false,
+      "severity": "warn"
+    },
+    {
+      "id": "no-console-logs",
+      "enabled": false,
+      "severity": "warn"
+    },
+    {
+      "id": "function-length",
+      "enabled": false,
+      "severity": "warn"
+    }
+  ],
+  "gates": {
+    "preCommit": true,
+    "prePush": true,
+    "onToolUse": false
+  },
+  "reporting": {
+    "format": "console",
+    "outputFile": null
+  }
+}

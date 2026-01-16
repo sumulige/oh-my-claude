@@ -132,6 +132,34 @@ const COMMANDS = {
     help: 'Manage configuration',
     args: '[get|set] [key] [value]'
   },
+  'config:validate': {
+    help: 'Validate configuration files',
+    args: ''
+  },
+  'config:backup': {
+    help: 'Create configuration backup',
+    args: ''
+  },
+  'config:rollback': {
+    help: 'Rollback to previous config',
+    args: '[version]'
+  },
+  'config:diff': {
+    help: 'Show config diff',
+    args: '[file1] [file2]'
+  },
+  'qg:check': {
+    help: 'Run quality gate check',
+    args: '[severity]'
+  },
+  'qg:rules': {
+    help: 'List available quality rules',
+    args: ''
+  },
+  'qg:init': {
+    help: 'Initialize quality gate config',
+    args: ''
+  },
   changelog: {
     help: 'Generate changelog from git commits',
     args: '[--from <tag>] [--to <tag>] [--json]'

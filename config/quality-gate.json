@@ -1,6 +1,6 @@
 {
   "enabled": true,
-  "severity": "warn",
+  "severity": "error",
   "rules": [
     {
       "id": "line-count-limit",

@@ -1,6 +1,32 @@
-# Changelog
+## [Unreleased] (2026-01-18)
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+### 🐛 Bug Fixes
+
+- make git hooks executable (e748915a)
+
+### 📝 Documentation
+
+- update README with v1.2.0 changelog entry (aa3cbc1d)
+
+### 🧪 Tests
+
+- significantly improve test coverage to 63.53% (0b552e0)
+  - Add config-schema.test.js with 62 tests (100% coverage)
+  - Add web-search.test.js with 34 tests for Bing HTML parsing
+  - Add sync-external.test.js with 13 tests for external skill sync
+  - Add update-registry.test.js with 29 tests for registry generation
+  - Expand marketplace.test.js to 43 tests
+  - Expand commands.test.js to 143 tests
+- add comprehensive regression tests for core modules (e3b570ed)
+
+### 🧹 Chores
+
+- **release**: 1.2.0 (03c0c309)
+
+### 📌 Other
+
+- optimize quality gate line-count rule (5b625d82)
+- set quality gate severity to error (66f96e59)
 
 ## [1.2.0](https://github.com/sumulige/sumulige-claude/compare/v1.1.2...v1.2.0) (2026-01-17)
 

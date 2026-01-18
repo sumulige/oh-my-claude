@@ -1,32 +1,24 @@
-## [Unreleased] (2026-01-18)
+# Changelog
 
-### 🐛 Bug Fixes
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-- make git hooks executable (e748915a)
+### [1.2.1](https://github.com/sumulige/sumulige-claude/compare/v1.1.2...v1.2.1) (2026-01-18)
 
-### 📝 Documentation
 
-- update README with v1.2.0 changelog entry (aa3cbc1d)
+### Fixed
 
-### 🧪 Tests
+* make git hooks executable ([e748915](https://github.com/sumulige/sumulige-claude/commits/e748915a2675664885c69d649133d7f8cc354f89))
 
-- significantly improve test coverage to 63.53% (0b552e0)
-  - Add config-schema.test.js with 62 tests (100% coverage)
-  - Add web-search.test.js with 34 tests for Bing HTML parsing
-  - Add sync-external.test.js with 13 tests for external skill sync
-  - Add update-registry.test.js with 29 tests for registry generation
-  - Expand marketplace.test.js to 43 tests
-  - Expand commands.test.js to 143 tests
-- add comprehensive regression tests for core modules (e3b570ed)
 
-### 🧹 Chores
+* add comprehensive regression tests for core modules ([e3b570e](https://github.com/sumulige/sumulige-claude/commits/e3b570ed1998aefd8d75e2767e78f2d7611eb0b9))
+* **release:** 1.2.0 ([03c0c30](https://github.com/sumulige/sumulige-claude/commits/03c0c3096d94293b48943a23cc69d618d940f386))
+* significantly improve test coverage to 63.53% ([0b552e0](https://github.com/sumulige/sumulige-claude/commits/0b552e03a42f88587a641da0fa40cbf2f3b136d4))
 
-- **release**: 1.2.0 (03c0c309)
 
-### 📌 Other
+### Changed
 
-- optimize quality gate line-count rule (5b625d82)
-- set quality gate severity to error (66f96e59)
+* update CHANGELOG with test coverage improvements ([d82cd19](https://github.com/sumulige/sumulige-claude/commits/d82cd19f97318ad96e7a67509622c2a9ffdcb643))
+* update README with v1.2.0 changelog entry ([aa3cbc1](https://github.com/sumulige/sumulige-claude/commits/aa3cbc1d7bb438197e1fa477fcc44646eda97fe5))
 
 ## [1.2.0](https://github.com/sumulige/sumulige-claude/compare/v1.1.2...v1.2.0) (2026-01-17)
 
